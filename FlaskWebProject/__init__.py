@@ -10,11 +10,13 @@ from flask_session import Session
 
 app = Flask(__name__)
 app.config.from_object(Config)
+# app.config['PROPAGATE_EXCEPTIONS'] = True
+
 # TODO: Add any logging levels and handlers with app.logger
-app.logger.setLevel(logging.WARNING)
-streamHandler = logging.StreamHandler()
-streamHandler.setLevel(logging.WARNING)
-app.logger.addHandler(streamHandler)
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+
+
 Session(app)
 db = SQLAlchemy(app)
 login = LoginManager(app)
