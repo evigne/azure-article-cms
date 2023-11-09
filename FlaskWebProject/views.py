@@ -67,6 +67,7 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
+            app.logger.info('failed to log in')
             flash('Invalid username or password')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
@@ -91,10 +92,10 @@ def authorized():
             request.args['code'],
             scopes=Config.SCOPE,
             redirect_uri=url_for('authorized', _external=True, _scheme='https'))
-        logging.info("Error Result====>", result)
+       
         if "error" in result:
-            logging.info('%s failed to log in', user.username)
-            app.logger.info('%s failed to log in', user.username)
+            # logging.info('%s failed to log in', user.username)
+            
             return render_template("auth_error.html", result=result)
         session["user"] = result.get("id_token_claims")
         # Note: In a real app, we'd use the 'name' property from session["user"] below
@@ -102,7 +103,7 @@ def authorized():
         user = User.query.filter_by(username="admin").first()
         login_user(user)
         _save_cache(cache)
-    logging.info('%s logged in successfully', user.username)
+    # logging.info('%s logged in successfully', user.username)
     app.logger.info('%s logged in successfully', user.username)
     return redirect(url_for('home'))
 
