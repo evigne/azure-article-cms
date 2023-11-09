@@ -67,6 +67,7 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
+            logging.info('failed to log in')
             app.logger.info('failed to log in')
             flash('Invalid username or password')
             return redirect(url_for('login'))
@@ -103,7 +104,7 @@ def authorized():
         user = User.query.filter_by(username="admin").first()
         login_user(user)
         _save_cache(cache)
-    # logging.info('%s logged in successfully', user.username)
+    logging.info('%s logged in successfully', user.username)
     app.logger.info('%s logged in successfully', user.username)
     return redirect(url_for('home'))
 
