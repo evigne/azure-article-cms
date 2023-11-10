@@ -13,8 +13,11 @@ app.config.from_object(Config)
 
 
 # TODO: Add any logging levels and handlers with app.logger
-# logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger(__name__)
+app.logger.setLevel(logging.INFO)
+streamHandler = logging.StreamHandler()
+streamHandler.setLevel(logging.INFO)
+app.logger.addHandler(streamHandler)
+
 
 
 
